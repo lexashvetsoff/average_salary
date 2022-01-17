@@ -1,7 +1,7 @@
 import requests
 from pprint import pprint
 
-def predict_rub_salary(vacansy):
+def predict_rub_salary_hh(vacansy):
     if vacansy is not None:
         if vacansy['currency'] == 'RUR':
             if vacansy['from'] is not None and vacansy['to'] is not None:
@@ -58,7 +58,7 @@ for lang in langs:
     for vacansy in full_vacansyes:
         # print(predict_rub_salary(vacansy['salary']))
         if vacansy['salary'] is not None:
-            salary = predict_rub_salary(vacansy['salary'])
+            salary = predict_rub_salary_hh(vacansy['salary'])
             if salary is not None:
                 sum = sum + salary
                 vacancies_processed = vacancies_processed + 1
