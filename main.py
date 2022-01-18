@@ -1,6 +1,7 @@
 import requests
 from terminaltables import AsciiTable
-from pprint import pprint
+import os
+from dotenv import load_dotenv
 
 def predict_rub_salary_hh(vacansy):
     if vacansy is not None:
@@ -97,7 +98,7 @@ def requests_hh(langs, url):
     return rating
 
 
-def requests_sj(langs, url):
+def requests_sj(langs, url, secret_key):
     rating = {}
 
     for lang in langs:
@@ -108,7 +109,7 @@ def requests_sj(langs, url):
         count = 50
         while page < pages:
             headers = {
-                'X-Api-App-Id': 'v3.r.121869903.b04be04a127192d565b8e50e88de28c1d40457f4.dec3f4bbad8bbf19cdc9a2312447cdc52252fb18'
+                'X-Api-App-Id': secret_key
             }
 
             payload = {
@@ -147,17 +148,25 @@ def requests_sj(langs, url):
     return rating
 
 
-langs = ['JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C', 'Go', 'Objective-C']
+def main():
+    load_dotenv()
 
-url_hh = 'https://api.hh.ru/vacancies'
-url_sj = 'https://api.superjob.ru/2.0/vacancies/'
+    secret_key = os.getenv('SECRET_KEY')
+    langs = ['JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C', 'Go', 'Objective-C']
 
-rating_hh = requests_hh(langs, url_hh)
-rating_sj = requests_sj(langs, url_sj)
+    url_hh = 'https://api.hh.ru/vacancies'
+    url_sj = 'https://api.superjob.ru/2.0/vacancies/'
 
-title_hh = 'HeadHanter Moscow'
-title_sj = 'SuperJob Moscow'
-titles = ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+    rating_hh = requests_hh(langs, url_hh)
+    rating_sj = requests_sj(langs, url_sj, secret_key)
 
-print_table(rating_hh, title_hh, titles)
-print_table(rating_sj, title_sj, titles)
+    title_hh = 'HeadHanter Moscow'
+    title_sj = 'SuperJob Moscow'
+    titles = ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+
+    print_table(rating_hh, title_hh, titles)
+    print_table(rating_sj, title_sj, titles)
+
+
+if __name__ == '__main__':
+    main()
