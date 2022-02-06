@@ -4,11 +4,11 @@ import os
 from dotenv import load_dotenv
 
 def predict_rub_salary_hh(vacansy):
-    if vacansy is not None:
+    if vacansy:
         if vacansy['currency'] == 'RUR':
-            if vacansy['from'] is not None and vacansy['to'] is not None:
+            if vacansy['from'] and vacansy['to']:
                 return (vacansy['from'] + vacansy['to']) / 2
-            elif vacansy['from'] is None and vacansy['to'] is not None:
+            elif vacansy['from'] is None and vacansy['to']:
                 return vacansy['to'] * 0.8
             else:
                 return  vacansy['from'] * 1.2
@@ -84,9 +84,9 @@ def make_requests_hh(langs, url):
         sum = 0
 
         for vacansy in full_vacancies:
-            if vacansy['salary'] is not None:
+            if vacansy['salary']:
                 salary = predict_rub_salary_hh(vacansy['salary'])
-                if salary is not None:
+                if salary:
                     sum = sum + salary
                     vacancies_processed = vacancies_processed + 1
 
@@ -136,7 +136,7 @@ def make_requests_sj(langs, url, secret_key):
 
         for vacansy in full_vacancies:
             salary = predict_rub_salary_sj(vacansy)
-            if salary is not None:
+            if salary:
                 sum = sum + salary
                 vacancies_processed = vacancies_processed + 1
 
