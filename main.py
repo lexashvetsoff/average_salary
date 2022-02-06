@@ -56,7 +56,7 @@ def requests_hh(langs, url):
     rating = {}
 
     for lang in langs:
-        full_vacansyes = []
+        full_vacancies = []
 
         pages = 1
         page = 0
@@ -78,12 +78,12 @@ def requests_hh(langs, url):
             page = page + 1
 
             vacansyes = answer['items']
-            full_vacansyes.extend(vacansyes)
+            full_vacancies.extend(vacansyes)
 
         vacancies_processed = 0
         sum = 0
 
-        for vacansy in full_vacansyes:
+        for vacansy in full_vacancies:
             if vacansy['salary'] is not None:
                 salary = predict_rub_salary_hh(vacansy['salary'])
                 if salary is not None:
@@ -102,7 +102,7 @@ def requests_sj(langs, url, secret_key):
     rating = {}
 
     for lang in langs:
-        full_vacansyes = []
+        full_vacancies = []
 
         pages = 1
         page = 0
@@ -129,12 +129,12 @@ def requests_sj(langs, url, secret_key):
             page = page + 1
 
             vacansyes = answer['objects']
-            full_vacansyes.extend(vacansyes)
+            full_vacancies.extend(vacansyes)
 
         vacancies_processed = 0
         sum = 0
 
-        for vacansy in full_vacansyes:
+        for vacansy in full_vacancies:
             salary = predict_rub_salary_sj(vacansy)
             if salary is not None:
                 sum = sum + salary

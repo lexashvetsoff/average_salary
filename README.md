@@ -13,7 +13,7 @@ SECRET_KEY=secret_key_sj
  SECRET_KEY - ваш секретный ключ полученный на сайте https://api.superjob.ru .
 
 Python3 должен быть уже установлен. 
-Затем используйте `pip` (или `pip3`, есть есть конфликт с Python2) для установки зависимостей:
+Затем используйте `pip` (или `pip3`, есть конфликт с Python2) для установки зависимостей:
 ```
 pip install -r requirements.txt
 ```
