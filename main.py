@@ -3,33 +3,19 @@ from terminaltables import AsciiTable
 import os
 from dotenv import load_dotenv
 
-def predict_rub_salary_hh(vacansy):
-    if vacansy:
-        if vacansy['currency'] == 'RUR':
-            if vacansy['from'] and vacansy['to']:
-                return (vacansy['from'] + vacansy['to']) / 2
-            elif vacansy['from'] is None and vacansy['to']:
-                return vacansy['to'] * 0.8
-            else:
-                return  vacansy['from'] * 1.2
+
+def predict_rub_salary(vacansy, payment_from, paymen_to):
+    if vacansy['currency'] == 'rub':
+        if payment_from and paymen_to:
+            return (payment_from + paymen_to) / 2
+        elif not payment_from and paymen_to:
+            return paymen_to * 0.8
+        elif payment_from and not paymen_to:
+            return  payment_from * 1.2
         else:
             return None
     else:
         return None
-
-
-def predict_rub_salary_sj(vacancy):
-        if vacancy['currency'] == 'rub':
-            if vacancy['payment_from'] and vacancy['payment_to']:
-                return (vacancy['payment_from'] + vacancy['payment_to']) / 2
-            elif not vacancy['payment_from'] and vacancy['payment_to']:
-                return vacancy['payment_to'] * 0.8
-            elif vacancy['payment_from'] and not vacancy['payment_to']:
-                return  vacancy['payment_from'] * 1.2
-            else:
-                return None
-        else:
-            return None
 
 
 def get_count_pages(total, count):
@@ -85,7 +71,8 @@ def make_requests_hh(langs, url):
 
         for vacansy in full_vacancies:
             if vacansy['salary']:
-                salary = predict_rub_salary_hh(vacansy['salary'])
+                hh_vacansy = vacansy['salary']
+                salary = predict_rub_salary(hh_vacansy, hh_vacansy['from'], hh_vacansy['to'])
                 if salary:
                     sum = sum + salary
                     vacancies_processed = vacancies_processed + 1
@@ -135,7 +122,7 @@ def make_requests_sj(langs, url, secret_key):
         sum = 0
 
         for vacansy in full_vacancies:
-            salary = predict_rub_salary_sj(vacansy)
+            salary = predict_rub_salary(vacansy, vacansy['payment_from'], vacansy['payment_to'])
             if salary:
                 sum = sum + salary
                 vacancies_processed = vacancies_processed + 1
