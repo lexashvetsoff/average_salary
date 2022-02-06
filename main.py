@@ -52,7 +52,7 @@ def print_table(data, title, titles):
     print(table.table)
 
 
-def requests_hh(langs, url):
+def make_requests_hh(langs, url):
     rating = {}
 
     for lang in langs:
@@ -98,7 +98,7 @@ def requests_hh(langs, url):
     return rating
 
 
-def requests_sj(langs, url, secret_key):
+def make_requests_sj(langs, url, secret_key):
     rating = {}
 
     for lang in langs:
@@ -157,8 +157,8 @@ def main():
     url_hh = 'https://api.hh.ru/vacancies'
     url_sj = 'https://api.superjob.ru/2.0/vacancies/'
 
-    rating_hh = requests_hh(langs, url_hh)
-    rating_sj = requests_sj(langs, url_sj, secret_key)
+    rating_hh = make_requests_hh(langs, url_hh)
+    rating_sj = make_requests_sj(langs, url_sj, secret_key)
 
     title_hh = 'HeadHanter Moscow'
     title_sj = 'SuperJob Moscow'
