@@ -20,11 +20,11 @@ def predict_rub_salary_hh(vacansy):
 
 def predict_rub_salary_sj(vacancy):
         if vacancy['currency'] == 'rub':
-            if vacancy['payment_from'] != 0 and vacancy['payment_to'] != 0:
+            if vacancy['payment_from'] and vacancy['payment_to']:
                 return (vacancy['payment_from'] + vacancy['payment_to']) / 2
-            elif vacancy['payment_from'] == 0 and vacancy['payment_to'] != 0:
+            elif not vacancy['payment_from'] and vacancy['payment_to']:
                 return vacancy['payment_to'] * 0.8
-            elif vacancy['payment_from'] != 0 and vacancy['payment_to'] == 0:
+            elif vacancy['payment_from'] and not vacancy['payment_to']:
                 return  vacancy['payment_from'] * 1.2
             else:
                 return None
