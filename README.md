@@ -7,7 +7,7 @@
 
 Для корректной работы необходимо создать файл .env со следующими данными:
 ```
-SECRET_KEY=secret_key_sj
+SECRET_KEY_SJ=secret_key_sj
 ```
 где:
  SECRET_KEY - ваш секретный ключ полученный на сайте https://api.superjob.ru .

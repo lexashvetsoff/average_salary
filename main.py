@@ -151,7 +151,7 @@ def requests_sj(langs, url, secret_key):
 def main():
     load_dotenv()
 
-    secret_key = os.getenv('SECRET_KEY')
+    secret_key = os.getenv('SECRET_KEY_SJ')
     langs = ['JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C', 'Go', 'Objective-C']
 
     url_hh = 'https://api.hh.ru/vacancies'
