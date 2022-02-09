@@ -30,7 +30,8 @@ def print_table(data, title, titles):
     table_data.append(titles)
     
     for item in data:
-        row_table = [item, data[item]['vacancies_found'], data[item]['vacancies_processed'], data[item]['average_salary']]
+        lang = data[item]
+        row_table = [item, lang['vacancies_found'], lang['vacancies_processed'], lang['average_salary']]
         table_data.append(row_table)
 
     table = AsciiTable(table_data, title)
