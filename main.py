@@ -1,3 +1,4 @@
+from numpy import average
 import requests
 from terminaltables import AsciiTable
 import os
@@ -39,6 +40,38 @@ def print_table(data, title, titles):
     print(table.table)
 
 
+def get_average_salary_hh(vacancies):
+    vacancies_processed = 0
+    sum = 0
+
+    for vacansy in vacancies:
+        if vacansy['salary']:
+            hh_vacansy = vacansy['salary']
+            salary = predict_rub_salary(hh_vacansy, hh_vacansy['from'], hh_vacansy['to'])
+            if salary:
+                sum = sum + salary
+                vacancies_processed = vacancies_processed + 1
+    
+    average = int(sum / vacancies_processed)
+
+    return average, vacancies_processed
+
+
+def get_avarage_salary_sj(vacancies):
+    vacancies_processed = 0
+    sum = 0
+
+    for vacansy in vacancies:
+        salary = predict_rub_salary(vacansy, vacansy['payment_from'], vacansy['payment_to'])
+        if salary:
+            sum = sum + salary
+            vacancies_processed = vacancies_processed + 1
+
+    average = int(sum / vacancies_processed)
+
+    return average, vacancies_processed
+
+
 def make_requests_hh(langs, url):
     rating = {}
 
@@ -67,18 +100,7 @@ def make_requests_hh(langs, url):
             vacansyes = answer['items']
             full_vacancies.extend(vacansyes)
 
-        vacancies_processed = 0
-        sum = 0
-
-        for vacansy in full_vacancies:
-            if vacansy['salary']:
-                hh_vacansy = vacansy['salary']
-                salary = predict_rub_salary(hh_vacansy, hh_vacansy['from'], hh_vacansy['to'])
-                if salary:
-                    sum = sum + salary
-                    vacancies_processed = vacancies_processed + 1
-
-        average_salary = int(sum / vacancies_processed)
+        average_salary, vacancies_processed = get_average_salary_hh
 
         rating[lang] = {"vacancies_found": answer['found'], 
                         'vacancies_processed': vacancies_processed, 
@@ -119,16 +141,7 @@ def make_requests_sj(langs, url, secret_key):
             vacansyes = answer['objects']
             full_vacancies.extend(vacansyes)
 
-        vacancies_processed = 0
-        sum = 0
-
-        for vacansy in full_vacancies:
-            salary = predict_rub_salary(vacansy, vacansy['payment_from'], vacansy['payment_to'])
-            if salary:
-                sum = sum + salary
-                vacancies_processed = vacancies_processed + 1
-
-        average_salary = int(sum / vacancies_processed)
+        average_salary, vacancies_processed = get_avarage_salary_sj(full_vacancies)
 
         rating[lang] = {"vacancies_found": answer['total'], 
                         'vacancies_processed': vacancies_processed, 
