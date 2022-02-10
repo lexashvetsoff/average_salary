@@ -83,7 +83,6 @@ def make_requests_hh(langs, url):
             payload = {
                 'text': f'Программист {lang}',
                 'area': 1,
-                'only_with_salary': True,
                 'period': 30,
                 'per_page': 100,  # количество вакансий на странице
                 'page': page
