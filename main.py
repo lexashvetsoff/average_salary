@@ -1,4 +1,3 @@
-from numpy import average
 import requests
 from terminaltables import AsciiTable
 import os
@@ -50,7 +49,7 @@ def get_average_salary_hh(vacancies):
             salary = predict_rub_salary(hh_vacansy, hh_vacansy['from'], hh_vacansy['to'])
             if salary:
                 sum = sum + salary
-                vacancies_processed = vacancies_processed + 1
+                vacancies_processed += 1
     
     average = int(sum / vacancies_processed)
 
@@ -65,7 +64,7 @@ def get_avarage_salary_sj(vacancies):
         salary = predict_rub_salary(vacansy, vacansy['payment_from'], vacansy['payment_to'])
         if salary:
             sum = sum + salary
-            vacancies_processed = vacancies_processed + 1
+            vacancies_processed += 1
 
     average = int(sum / vacancies_processed)
 
@@ -95,7 +94,7 @@ def make_requests_hh(langs, url):
 
             answer = response.json()
             pages = answer['pages']
-            page = page + 1
+            page += 1
 
             vacansyes = answer['items']
             full_vacancies.extend(vacansyes)
@@ -136,7 +135,7 @@ def make_requests_sj(langs, url, secret_key):
 
             answer = response.json()
             pages = get_count_pages(answer['total'], count)
-            page = page + 1
+            page += 1
 
             vacansyes = answer['objects']
             full_vacancies.extend(vacansyes)
