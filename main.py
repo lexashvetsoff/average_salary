@@ -25,7 +25,8 @@ def get_count_pages(total, count):
         return total // count
 
 
-def print_table(data, title, titles):
+def print_table(data, title):
+    titles = ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
     table_data = []
     table_data.append(titles)
     
@@ -71,8 +72,9 @@ def get_avarage_salary_sj(vacancies):
     return average, vacancies_processed
 
 
-def make_requests_hh(langs, url):
+def make_requests_hh(langs):
     rating = {}
+    url = 'https://api.hh.ru/vacancies'
 
     for lang in langs:
         full_vacancies = []
@@ -106,8 +108,9 @@ def make_requests_hh(langs, url):
     return rating
 
 
-def make_requests_sj(langs, url, secret_key):
+def make_requests_sj(langs, secret_key):
     rating = {}
+    url = 'https://api.superjob.ru/2.0/vacancies/'
 
     for lang in langs:
         full_vacancies = []
@@ -153,18 +156,14 @@ def main():
     secret_key = os.getenv('SECRET_KEY_SJ')
     langs = ['JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C', 'Go', 'Objective-C']
 
-    url_hh = 'https://api.hh.ru/vacancies'
-    url_sj = 'https://api.superjob.ru/2.0/vacancies/'
-
-    rating_hh = make_requests_hh(langs, url_hh)
-    rating_sj = make_requests_sj(langs, url_sj, secret_key)
+    rating_hh = make_requests_hh(langs)
+    rating_sj = make_requests_sj(langs, secret_key)
 
     title_hh = 'HeadHanter Moscow'
     title_sj = 'SuperJob Moscow'
-    titles = ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
 
-    print_table(rating_hh, title_hh, titles)
-    print_table(rating_sj, title_sj, titles)
+    print_table(rating_hh, title_hh)
+    print_table(rating_sj, title_sj)
 
 
 if __name__ == '__main__':
