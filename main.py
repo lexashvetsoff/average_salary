@@ -11,7 +11,7 @@ def predict_rub_salary(vacansy, payment_from, paymen_to):
         elif not payment_from and paymen_to:
             return paymen_to * 0.8
         elif payment_from and not paymen_to:
-            return  payment_from * 1.2
+            return payment_from * 1.2
         else:
             return None
     else:
@@ -26,13 +26,23 @@ def get_count_pages(total, count):
 
 
 def print_table(data, title):
-    titles = ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+    titles = [
+        'Язык программирования',
+        'Вакансий найдено',
+        'Вакансий обработано',
+        'Средняя зарплата'
+    ]
     table_data = []
     table_data.append(titles)
-    
+
     for item in data:
         lang = data[item]
-        row_table = [item, lang['vacancies_found'], lang['vacancies_processed'], lang['average_salary']]
+        row_table = [
+            item,
+            lang['vacancies_found'],
+            lang['vacancies_processed'],
+            lang['average_salary']
+        ]
         table_data.append(row_table)
 
     table = AsciiTable(table_data, title)
@@ -47,11 +57,13 @@ def get_average_salary_hh(vacancies):
     for vacansy in vacancies:
         if vacansy['salary']:
             hh_vacansy = vacansy['salary']
-            salary = predict_rub_salary(hh_vacansy, hh_vacansy['from'], hh_vacansy['to'])
+            salary = predict_rub_salary(hh_vacansy,
+                                        hh_vacansy['from'],
+                                        hh_vacansy['to'])
             if salary:
                 sum = sum + salary
                 vacancies_processed += 1
-    
+
     average = int(sum / vacancies_processed)
 
     return average, vacancies_processed
@@ -62,7 +74,9 @@ def get_avarage_salary_sj(vacancies):
     sum = 0
 
     for vacansy in vacancies:
-        salary = predict_rub_salary(vacansy, vacansy['payment_from'], vacansy['payment_to'])
+        salary = predict_rub_salary(vacansy,
+                                    vacansy['payment_from'],
+                                    vacansy['payment_to'])
         if salary:
             sum = sum + salary
             vacancies_processed += 1
@@ -100,11 +114,11 @@ def make_requests_hh(langs):
             vacansyes = answer['items']
             full_vacancies.extend(vacansyes)
 
-        average_salary, vacancies_processed = get_average_salary_hh
+        mean_salary, vacancies_processed = get_average_salary_hh
 
-        rating[lang] = {"vacancies_found": answer['found'], 
-                        'vacancies_processed': vacancies_processed, 
-                        'average_salary': average_salary}
+        rating[lang] = {"vacancies_found": answer['found'],
+                        'vacancies_processed': vacancies_processed,
+                        'average_salary': mean_salary}
     return rating
 
 
@@ -142,11 +156,11 @@ def make_requests_sj(langs, secret_key):
             vacansyes = answer['objects']
             full_vacancies.extend(vacansyes)
 
-        average_salary, vacancies_processed = get_avarage_salary_sj(full_vacancies)
+        mean_salary, vacancies_processed = get_avarage_salary_sj(full_vacancies)
 
-        rating[lang] = {"vacancies_found": answer['total'], 
-                        'vacancies_processed': vacancies_processed, 
-                        'average_salary': average_salary}
+        rating[lang] = {"vacancies_found": answer['total'],
+                        'vacancies_processed': vacancies_processed,
+                        'average_salary': mean_salary}
     return rating
 
 
@@ -154,7 +168,18 @@ def main():
     load_dotenv()
 
     secret_key = os.getenv('SECRET_KEY_SJ')
-    langs = ['JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C', 'Go', 'Objective-C']
+    langs = [
+        'JavaScript',
+        'Java',
+        'Python',
+        'Ruby',
+        'PHP',
+        'C++',
+        'C#',
+        'C',
+        'Go',
+        'Objective-C'
+    ]
 
     rating_hh = make_requests_hh(langs)
     rating_sj = make_requests_sj(langs, secret_key)
