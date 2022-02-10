@@ -37,7 +37,7 @@ def print_table(data, title):
 
     table = AsciiTable(table_data, title)
     table.justify_columns[4] = 'right'
-    print(table.table)
+    return table.table
 
 
 def get_average_salary_hh(vacancies):
@@ -162,8 +162,8 @@ def main():
     title_hh = 'HeadHanter Moscow'
     title_sj = 'SuperJob Moscow'
 
-    print_table(rating_hh, title_hh)
-    print_table(rating_sj, title_sj)
+    print(print_table(rating_hh, title_hh))
+    print(print_table(rating_sj, title_sj))
 
 
 if __name__ == '__main__':
