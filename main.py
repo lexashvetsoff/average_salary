@@ -50,7 +50,7 @@ def create_table(data, title):
     return table.table
 
 
-def get_average_salary_hh(vacancies):
+def get_salary_avarage_hh(vacancies):
     vacancies_processed = 0
     salary_summa = 0
 
@@ -69,7 +69,7 @@ def get_average_salary_hh(vacancies):
     return average, vacancies_processed
 
 
-def get_avarage_salary_sj(vacancies):
+def get_salary_avarage_sj(vacancies):
     vacancies_processed = 0
     salary_summa = 0
 
@@ -114,7 +114,7 @@ def get_statistics_hh(langs):
             vacansyes = answer['items']
             full_vacancies.extend(vacansyes)
 
-        mean_salary, vacancies_processed = get_average_salary_hh
+        mean_salary, vacancies_processed = get_salary_avarage_hh
 
         rating[lang] = {"vacancies_found": answer['found'],
                         'vacancies_processed': vacancies_processed,
@@ -156,7 +156,7 @@ def get_statistics_sj(langs, secret_key):
             vacansyes = answer['objects']
             full_vacancies.extend(vacansyes)
 
-        mean_salary, vacancies_processed = get_avarage_salary_sj(full_vacancies)
+        mean_salary, vacancies_processed = get_salary_avarage_sj(full_vacancies)
 
         rating[lang] = {"vacancies_found": answer['total'],
                         'vacancies_processed': vacancies_processed,
