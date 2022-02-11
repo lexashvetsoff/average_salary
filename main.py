@@ -86,35 +86,75 @@ def get_salary_avarage_sj(vacancies):
     return average, vacancies_processed
 
 
-def get_statistics_hh(langs):
-    rating = {}
+def requests_hh(lang):
+    full_vacancies = []
     url = 'https://api.hh.ru/vacancies'
 
+    pages = 1
+    page = 0
+    while page < pages:
+        payload = {
+            'text': f'Программист {lang}',
+            'area': 1,   # город Москва
+            'period': 30,
+            'per_page': 100,  # количество вакансий на странице
+            'page': page
+        }
+
+        response = requests.get(url, params=payload)
+        response.raise_for_status()
+
+        answer = response.json()
+        pages = answer['pages']
+        page += 1
+
+        vacansyes = answer['items']
+        full_vacancies.extend(vacansyes)
+
+    return answer, full_vacancies
+
+
+def requests_sj(lang, secret_key):
+    full_vacancies = []
+    url = 'https://api.superjob.ru/2.0/vacancies/'
+
+    pages = 1
+    page = 0
+    count = 50
+    while page < pages:
+        headers = {
+            'X-Api-App-Id': secret_key
+        }
+
+        payload = {
+            'keyword': lang,
+            'period': 0,
+            'town': 'Москва',
+            'catalogues': 'Разработка, программирование',
+            'page': page,
+            'count': count
+        }
+
+        response = requests.get(url, headers=headers, params=payload)
+        response.raise_for_status()
+
+        answer = response.json()
+        pages = get_count_pages(answer['total'], count)
+        page += 1
+
+        vacansyes = answer['objects']
+        full_vacancies.extend(vacansyes)
+    
+    return answer, full_vacancies
+
+
+def get_statistics_hh(langs):
+    rating = {}
+
     for lang in langs:
-        full_vacancies = []
+        answer, full_vacancies = requests_hh(lang)
 
-        pages = 1
-        page = 0
-        while page < pages:
-            payload = {
-                'text': f'Программист {lang}',
-                'area': 1,   # город Москва
-                'period': 30,
-                'per_page': 100,  # количество вакансий на странице
-                'page': page
-            }
-
-            response = requests.get(url, params=payload)
-            response.raise_for_status()
-
-            answer = response.json()
-            pages = answer['pages']
-            page += 1
-
-            vacansyes = answer['items']
-            full_vacancies.extend(vacansyes)
-
-        mean_salary, vacancies_processed = get_salary_avarage_hh
+        mean_salary, vacancies_processed = get_salary_avarage_hh(full_vacancies)
 
         rating[lang] = {"vacancies_found": answer['found'],
                         'vacancies_processed': vacancies_processed,
@@ -124,37 +164,9 @@ def get_statistics_hh(langs):
 
 def get_statistics_sj(langs, secret_key):
     rating = {}
-    url = 'https://api.superjob.ru/2.0/vacancies/'
 
     for lang in langs:
-        full_vacancies = []
-
-        pages = 1
-        page = 0
-        count = 50
-        while page < pages:
-            headers = {
-                'X-Api-App-Id': secret_key
-            }
-
-            payload = {
-                'keyword': lang,
-                'period': 0,
-                'town': 'Москва',
-                'catalogues': 'Разработка, программирование',
-                'page': page,
-                'count': count
-            }
-
-            response = requests.get(url, headers=headers, params=payload)
-            response.raise_for_status()
-
-            answer = response.json()
-            pages = get_count_pages(answer['total'], count)
-            page += 1
-
-            vacansyes = answer['objects']
-            full_vacancies.extend(vacansyes)
+        answer, full_vacancies = requests_sj(lang, secret_key)
 
         mean_salary, vacancies_processed = get_salary_avarage_sj(full_vacancies)
 
