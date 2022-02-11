@@ -98,7 +98,7 @@ def get_statistics_hh(langs):
         while page < pages:
             payload = {
                 'text': f'Программист {lang}',
-                'area': 1,
+                'area': 1,   # город Москва
                 'period': 30,
                 'per_page': 100,  # количество вакансий на странице
                 'page': page
