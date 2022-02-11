@@ -25,7 +25,7 @@ def get_count_pages(total, count):
         return total // count
 
 
-def print_table(data, title):
+def create_table(data, title):
     titles = [
         'Язык программирования',
         'Вакансий найдено',
@@ -86,7 +86,7 @@ def get_avarage_salary_sj(vacancies):
     return average, vacancies_processed
 
 
-def make_requests_hh(langs):
+def get_statistics_hh(langs):
     rating = {}
     url = 'https://api.hh.ru/vacancies'
 
@@ -122,7 +122,7 @@ def make_requests_hh(langs):
     return rating
 
 
-def make_requests_sj(langs, secret_key):
+def get_statistics_sj(langs, secret_key):
     rating = {}
     url = 'https://api.superjob.ru/2.0/vacancies/'
 
@@ -181,14 +181,14 @@ def main():
         'Objective-C'
     ]
 
-    rating_hh = make_requests_hh(langs)
-    rating_sj = make_requests_sj(langs, secret_key)
+    rating_hh = get_statistics_hh(langs)
+    rating_sj = get_statistics_sj(langs, secret_key)
 
     title_hh = 'HeadHanter Moscow'
     title_sj = 'SuperJob Moscow'
 
-    print(print_table(rating_hh, title_hh))
-    print(print_table(rating_sj, title_sj))
+    print(create_table(rating_hh, title_hh))
+    print(create_table(rating_sj, title_sj))
 
 
 if __name__ == '__main__':
