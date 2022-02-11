@@ -2,20 +2,17 @@ import requests
 from terminaltables import AsciiTable
 import os
 from dotenv import load_dotenv
+from itertools import count
 
 
 def predict_rub_salary(vacansy, payment_from, paymen_to):
     if vacansy['currency'] == 'rub':
         if payment_from and paymen_to:
             return (payment_from + paymen_to) / 2
-        elif not payment_from and paymen_to:
+        elif paymen_to:
             return paymen_to * 0.8
-        elif payment_from and not paymen_to:
+        elif payment_from:
             return payment_from * 1.2
-        else:
-            return None
-    else:
-        return None
 
 
 def get_count_pages(total, count):
@@ -61,7 +58,7 @@ def get_salary_avarage_hh(vacancies):
                                         hh_vacansy['from'],
                                         hh_vacansy['to'])
             if salary:
-                salary_summa = salary_summa + salary
+                salary_summa += salary
                 vacancies_processed += 1
 
     average = int(salary_summa / vacancies_processed)
@@ -78,7 +75,7 @@ def get_salary_avarage_sj(vacancies):
                                     vacansy['payment_from'],
                                     vacansy['payment_to'])
         if salary:
-            salary_summa = salary_summa + salary
+            salary_summa += salary
             vacancies_processed += 1
 
     average = int(sum / vacancies_processed)
@@ -91,8 +88,10 @@ def requests_hh(lang):
     url = 'https://api.hh.ru/vacancies'
 
     pages = 1
-    page = 0
-    while page < pages:
+    for page in count(start=0, step=1):
+        if page >= pages:
+            break
+    
         payload = {
             'text': f'Программист {lang}',
             'area': 1,   # город Москва
@@ -119,9 +118,11 @@ def requests_sj(lang, secret_key):
     url = 'https://api.superjob.ru/2.0/vacancies/'
 
     pages = 1
-    page = 0
     count = 50
-    while page < pages:
+    for page in count(start=0, step=1):
+        if page >= pages:
+            break
+    
         headers = {
             'X-Api-App-Id': secret_key
         }
