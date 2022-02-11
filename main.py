@@ -52,7 +52,7 @@ def create_table(data, title):
 
 def get_average_salary_hh(vacancies):
     vacancies_processed = 0
-    sum = 0
+    salary_summa = 0
 
     for vacansy in vacancies:
         if vacansy['salary']:
@@ -61,24 +61,24 @@ def get_average_salary_hh(vacancies):
                                         hh_vacansy['from'],
                                         hh_vacansy['to'])
             if salary:
-                sum = sum + salary
+                salary_summa = salary_summa + salary
                 vacancies_processed += 1
 
-    average = int(sum / vacancies_processed)
+    average = int(salary_summa / vacancies_processed)
 
     return average, vacancies_processed
 
 
 def get_avarage_salary_sj(vacancies):
     vacancies_processed = 0
-    sum = 0
+    salary_summa = 0
 
     for vacansy in vacancies:
         salary = predict_rub_salary(vacansy,
                                     vacansy['payment_from'],
                                     vacansy['payment_to'])
         if salary:
-            sum = sum + salary
+            salary_summa = salary_summa + salary
             vacancies_processed += 1
 
     average = int(sum / vacancies_processed)
