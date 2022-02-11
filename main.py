@@ -19,7 +19,7 @@ def predict_rub_salary(vacansy, payment_from, paymen_to):
 
 
 def get_count_pages(total, count):
-    if total % count != 0:
+    if total % count:
         return (total // count) + 1
     else:
         return total // count
