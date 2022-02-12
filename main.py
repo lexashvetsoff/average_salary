@@ -6,13 +6,14 @@ from itertools import count
 
 
 def predict_rub_salary(vacansy, payment_from, paymen_to):
-    if vacansy['currency'] == 'rub':
-        if payment_from and paymen_to:
-            return (payment_from + paymen_to) / 2
-        elif paymen_to:
-            return paymen_to * 0.8
-        elif payment_from:
-            return payment_from * 1.2
+    if vacansy['currency'] != 'rub':
+        return None
+    if payment_from and paymen_to:
+        return (payment_from + paymen_to) / 2
+    elif paymen_to:
+        return paymen_to * 0.8
+    elif payment_from:
+        return payment_from * 1.2
 
 
 def get_count_pages(total, count):
