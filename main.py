@@ -88,11 +88,7 @@ def make_requests_hh(lang):
     full_vacancies = []
     url = 'https://api.hh.ru/vacancies'
 
-    pages = 1
-    for page in count(start=0, step=1):
-        if page >= pages:
-            break
-    
+    for page in count(start=0, step=1):    
         payload = {
             'text': f'Программист {lang}',
             'area': 1,   # город Москва
@@ -106,10 +102,12 @@ def make_requests_hh(lang):
 
         answer = response.json()
         pages = answer['pages']
-        page += 1
 
         vacansyes = answer['items']
         full_vacancies.extend(vacansyes)
+
+        if page >= pages:
+            break
 
     return answer, full_vacancies
 
@@ -118,12 +116,8 @@ def make_requests_sj(lang, secret_key):
     full_vacancies = []
     url = 'https://api.superjob.ru/2.0/vacancies/'
 
-    pages = 1
     count = 50
-    for page in count(start=0, step=1):
-        if page >= pages:
-            break
-    
+    for page in count(start=0, step=1):    
         headers = {
             'X-Api-App-Id': secret_key
         }
@@ -142,10 +136,12 @@ def make_requests_sj(lang, secret_key):
 
         answer = response.json()
         pages = get_count_pages(answer['total'], count)
-        page += 1
 
         vacansyes = answer['objects']
         full_vacancies.extend(vacansyes)
+
+        if page >= pages:
+            break
     
     return answer, full_vacancies
 
