@@ -48,7 +48,7 @@ def create_table(data, title):
     return table.table
 
 
-def get_salary_avarage_hh(vacancies):
+def get_salary_avarage_hh(vacancies, answer):
     vacancies_processed = 0
     salary_sum = 0
 
@@ -64,10 +64,14 @@ def get_salary_avarage_hh(vacancies):
 
     average = int(salary_sum / vacancies_processed)
 
-    return average, vacancies_processed
+    rating = {"vacancies_found": answer['found'],
+                        'vacancies_processed': vacancies_processed,
+                        'average_salary': average}
+
+    return rating
 
 
-def get_salary_avarage_sj(vacancies):
+def get_salary_avarage_sj(vacancies, answer):
     vacancies_processed = 0
     salary_sum = 0
 
@@ -81,7 +85,11 @@ def get_salary_avarage_sj(vacancies):
 
     average = int(salary_sum / vacancies_processed)
 
-    return average, vacancies_processed
+    rating = {"vacancies_found": answer['total'],
+             'vacancies_processed': vacancies_processed,
+             'average_salary': average}
+
+    return rating
 
 
 def make_requests_hh(lang):
@@ -151,12 +159,7 @@ def get_statistics_hh(langs):
 
     for lang in langs:
         answer, full_vacancies = make_requests_hh(lang)
-
-        mean_salary, vacancies_processed = get_salary_avarage_hh(full_vacancies)
-
-        rating[lang] = {"vacancies_found": answer['found'],
-                        'vacancies_processed': vacancies_processed,
-                        'average_salary': mean_salary}
+        rating[lang] = get_salary_avarage_hh(full_vacancies, answer)
     return rating
 
 
@@ -165,12 +168,7 @@ def get_statistics_sj(langs, secret_key):
 
     for lang in langs:
         answer, full_vacancies = make_requests_sj(lang, secret_key)
-
-        mean_salary, vacancies_processed = get_salary_avarage_sj(full_vacancies)
-
-        rating[lang] = {"vacancies_found": answer['total'],
-                        'vacancies_processed': vacancies_processed,
-                        'average_salary': mean_salary}
+        rating[lang] = get_salary_avarage_sj(full_vacancies, answer)
     return rating
 
 
