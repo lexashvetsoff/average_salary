@@ -84,7 +84,7 @@ def get_salary_avarage_sj(vacancies):
     return average, vacancies_processed
 
 
-def requests_hh(lang):
+def make_requests_hh(lang):
     full_vacancies = []
     url = 'https://api.hh.ru/vacancies'
 
@@ -114,7 +114,7 @@ def requests_hh(lang):
     return answer, full_vacancies
 
 
-def requests_sj(lang, secret_key):
+def make_requests_sj(lang, secret_key):
     full_vacancies = []
     url = 'https://api.superjob.ru/2.0/vacancies/'
 
@@ -154,7 +154,7 @@ def get_statistics_hh(langs):
     rating = {}
 
     for lang in langs:
-        answer, full_vacancies = requests_hh(lang)
+        answer, full_vacancies = make_requests_hh(lang)
 
         mean_salary, vacancies_processed = get_salary_avarage_hh(full_vacancies)
 
@@ -168,7 +168,7 @@ def get_statistics_sj(langs, secret_key):
     rating = {}
 
     for lang in langs:
-        answer, full_vacancies = requests_sj(lang, secret_key)
+        answer, full_vacancies = make_requests_sj(lang, secret_key)
 
         mean_salary, vacancies_processed = get_salary_avarage_sj(full_vacancies)
 
