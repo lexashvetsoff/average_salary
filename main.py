@@ -111,8 +111,8 @@ def get_vacancies_hh(lang):
         answer = response.json()
         pages = answer['pages']
 
-        vacansyes = answer['items']
-        full_vacancies.extend(vacansyes)
+        vacancies = answer['items']
+        full_vacancies.extend(vacancies)
 
         if page >= pages:
             break
@@ -145,8 +145,8 @@ def get_vacancies_sj(lang, secret_key):
         answer = response.json()
         pages = get_count_pages(answer['total'], count)
 
-        vacansyes = answer['objects']
-        full_vacancies.extend(vacansyes)
+        vacancies = answer['objects']
+        full_vacancies.extend(vacancies)
 
         if page >= pages:
             break
